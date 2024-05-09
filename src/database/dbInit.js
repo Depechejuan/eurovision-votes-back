@@ -29,6 +29,7 @@ async function createTables(pool) {
         CREATE TABLE IF NOT EXISTS users(
             id CHAR(36) PRIMARY KEY,
             name VARCHAR(20) NOT NULL UNIQUE,
+            alreadyVote BOOLEAN DEFAULT false,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     `);

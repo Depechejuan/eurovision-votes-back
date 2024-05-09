@@ -16,6 +16,14 @@ module.exports = {
         }
     },
 
+    async getUserByID(idUser) {
+        const statement = `
+            SELECT * FROM users WHERE id = ?
+        `;
+        const [rows] = await db.execute(statement, [idUser]);
+        return rows;
+    },
+
     async getIDCountryByName(country) {
         const statement = `SELECT id FROM countries WHERE country = ?`;
         const [rows] = await db.execute(statement, [country]);
@@ -80,5 +88,13 @@ module.exports = {
         `;
         const [rows] = await db.execute(statement);
         return rows;
+    },
+
+    async changeVoteStatus(status, idUser) {
+        const statement = `
+            UPDATE users SET alreadyVote = ?
+            WHERE id = ?
+        `;
+        await db.execute(statement, [status, idUser]);
     },
 };

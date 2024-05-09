@@ -11,12 +11,12 @@ module.exports = {
         };
     },
 
-    emailNotValidated() {
+    AlreadyVote() {
         return {
             success,
             status: 400,
-            code: "EMAIL_NOT_VALIDATED",
-            message: "Email has not been validated yet",
+            code: "ALREADY VOTE",
+            message: "Ya has votao!",
         };
     },
 
