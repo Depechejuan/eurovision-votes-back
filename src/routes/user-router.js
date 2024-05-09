@@ -4,6 +4,12 @@ const { sendResponse } = require("../utils/send-response");
 const { sendError } = require("../utils/send-error");
 const { register } = require("../controllers/register");
 const vote = require("../controllers/vote");
+const authGuard = require("../middlewares/auth-guard");
+const {
+    getVoteByIdUser,
+    getAllVotes,
+    getScores,
+} = require("../services/db-service");
 
 const router = Router();
 
@@ -17,11 +23,41 @@ router.post("/user", json(), async (req, res) => {
     }
 });
 
-router.post("/vote", json(), async (req, res) => {
+router.post("/vote", authGuard, json(), async (req, res) => {
     try {
         const data = req.body;
-        const user = req.currentUser;
-        await vote(data, user);
+        const idUser = req.currentUser.id;
+        await vote(data, idUser);
+        sendResponse(res);
+    } catch (err) {
+        sendError(res, err);
+    }
+});
+
+router.get("/dashboard/user", authGuard, json(), async (req, res) => {
+    try {
+        const user = req.currentUser.id;
+        console.log(user);
+        const votes = await getVoteByIdUser(user);
+        sendResponse(res, votes);
+    } catch (err) {
+        sendError(res, err);
+    }
+});
+
+router.get("/dashboard/all", authGuard, json(), async (req, res) => {
+    try {
+        const data = await getAllVotes();
+        sendResponse(res, data);
+    } catch (err) {
+        sendError(res, err);
+    }
+});
+
+router.get("/dashboard/total", authGuard, json(), async (req, res) => {
+    try {
+        const data = await getScores();
+        sendResponse(res, data);
     } catch (err) {
         sendError(res, err);
     }

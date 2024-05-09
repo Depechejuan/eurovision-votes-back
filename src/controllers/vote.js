@@ -1,23 +1,18 @@
 "use strict";
 
-const { getIDCountryByName } = require("../services/db-service");
+const { getIDCountryByName, insertVote } = require("../services/db-service");
 
-async function vote(data, user) {
+async function vote(data, idUser) {
     try {
         console.log(data);
-        // crear busqueda segun nombre o id??
-        // const idUser = await getUserByName(user);
+        console.log(idUser);
 
         for (const vote of data) {
             console.log(vote);
             console.log(vote.pais);
             const idCountry = await getIDCountryByName(vote.pais);
-
             console.log(idCountry);
-            await connection.query(
-                "INSERT INTO votes (id, idCountry, idUser, points) VALUES (?, ?, ?, ?)",
-                [uuidv4(), countryId, userId, vote.puntos]
-            );
+            await insertVote(idCountry, idUser, vote.puntos);
         }
     } catch (err) {
         console.log(err);

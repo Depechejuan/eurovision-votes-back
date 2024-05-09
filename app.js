@@ -7,6 +7,7 @@ const express = require("express");
 
 const { sendError } = require("./src/utils/send-error.js");
 const appRouter = require("./src/routes/app-router.js");
+const validateToken = require("./src/middlewares/validate-token.js");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 
 app.use(express.json());
+app.use(validateToken);
 app.use(appRouter);
 
 const staticDirectory = path.join(__dirname, "/public/");
