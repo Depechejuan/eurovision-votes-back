@@ -47,7 +47,7 @@ async function createTables(pool) {
             id CHAR(36) PRIMARY KEY,
             idCountry CHAR(36) NOT NULL,
             idUser CHAR(36) NOT NULL,
-            points CHAR(12) NOT NULL,
+            points INT(12) NOT NULL,
             FOREIGN KEY (idCountry) REFERENCES countries (id) ON DELETE CASCADE,
             FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE
     )`);

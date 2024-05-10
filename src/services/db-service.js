@@ -48,7 +48,8 @@ module.exports = {
         SELECT v.points, c.country
         FROM votes v
         JOIN countries c ON v.idCountry = c.id
-        WHERE v.idUser = ?;
+        WHERE v.idUser = ?
+        ORDER BY v.points DESC;
         `;
         const [rows] = await db.execute(statement, [idUser]);
         return rows;
@@ -57,13 +58,14 @@ module.exports = {
     async getAllVotes() {
         const statement = `
         SELECT 
-        u.name AS userName,
-        JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'country', c.country,
-                'puntos', v.points
-            )
-        ) AS votes
+            u.name AS userName,
+            JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'country', c.country,
+                    'puntos', v.points
+                )
+            ) AS votes
+            
         FROM 
             votes v
         JOIN 
@@ -71,7 +73,7 @@ module.exports = {
         JOIN 
             countries c ON v.idCountry = c.id
         GROUP BY 
-            u.name;
+            u.name
         `;
         const [rows] = await db.execute(statement);
         return rows;
