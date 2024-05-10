@@ -13,6 +13,10 @@ const {
 
 const router = Router();
 
+router.get("/check", json(), async (req, res) => {
+    sendResponse(res);
+});
+
 router.post("/user", json(), async (req, res) => {
     try {
         console.log(req.body.name);
