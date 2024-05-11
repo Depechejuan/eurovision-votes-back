@@ -14,6 +14,7 @@ const {
 const router = Router();
 
 router.get("/check", json(), async (req, res) => {
+    console.log("Connected");
     sendResponse(res);
 });
 

@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { generateUUID } = require("../services/crypto-services");
+const { getIDCountryByName } = require("../services/db-service");
 
 async function addCountries(pool) {
     const countries = [
@@ -33,12 +34,31 @@ async function addCountries(pool) {
     console.log("Adding countries");
 
     try {
+        const idUser = generateUUID();
+        const puntos = 0;
+        await pool.query(
+            `
+            INSERT INTO users(id, name)
+            VALUES(?,?)`,
+            [idUser, "control_user"]
+        );
+
         for (const country of countries) {
+            console.log(country);
             const id = generateUUID();
 
             await pool.query(
                 `INSERT INTO countries (id, country) VALUES (?, ?)`,
                 [id, country]
+            );
+
+            const idCountry = await getIDCountryByName(country);
+
+            await pool.query(
+                `
+            INSERT INTO votes (id, idCountry, idUser, points)
+            VALUES (?, ?, ?, ?)`,
+                [generateUUID(), idCountry, idUser, puntos]
             );
         }
 
