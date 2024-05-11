@@ -9,6 +9,7 @@ const {
     getVoteByIdUser,
     getAllVotes,
     getScores,
+    deleteVote,
 } = require("../services/db-service");
 
 const router = Router();
@@ -66,6 +67,11 @@ router.get("/dashboard/total", authGuard, json(), async (req, res) => {
     } catch (err) {
         sendError(res, err);
     }
+});
+
+router.delete("/borrame", json(), async (req, res) => {
+    await deleteVote(req.body.name);
+    sendResponse(res);
 });
 
 module.exports = router;

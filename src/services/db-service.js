@@ -4,6 +4,18 @@ const { generateUUID } = require("./crypto-services");
 const db = getConnection();
 
 module.exports = {
+    async deleteVote(vote) {
+        try {
+            const statement = `DELETE votes
+            FROM votes
+            JOIN users ON votes.idUser = users.id
+            WHERE users.name = ?;
+            `;
+            await db.execute(statement, [vote]);
+        } catch (err) {
+            console.log(err);
+        }
+    },
     async insertUserFromLS(data) {
         try {
             const statement = `
